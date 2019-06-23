@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resources</title>
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<style>
+body{
+  padding-top: 50px;
+  padding-bottom: 20px;
+}
+#cover_1{
+	height:400px;
+	margin-top: 10px;
+	}
+#cover_2{
+	height:400px;
+	margin-top: 10px;
+	}
+#cover_3{
+	height:400px;
+	margin-top: 10px;
+	}
+.slide1{
+  background-image: url('devil-may-cry-5.jpg');
+  height: 500px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+.slide2{
+  background-image: url('anthem.jpg');
+  height: 500px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+.slide3{
+  background-image: url('sekira.jpg');
+  height: 500px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+.carousel-caption h1{
+  font-size: 5.4em;
+  font-family: 'Pacifico', cursive;
+  padding-bottom: .4em;
+}
+.carousel-caption p{
+  font-size: 2em;
+}
+.modal-open{
+  padding:0 !important;
+  overflow-y: auto;
+ }
+.modal-header{
+    border-bottom: none; }
+.modal-footer {
+    border-top: none; }
+
+
+.modal-dialog {
+    width: 500px;
+    margin: 50px auto;
+  }
+  .modal-content {
+    -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+  }
+  .navbar-right {
+    margin-right: 0px;
+}
+hgroup {
+	text-align:center;
+	margin-top: 1em;
+}
+
+form {
+	width: 380px;
+	margin: 1px auto;
+	padding: 3em 2em 2em 2em;
+}
+
+.group {
+	position: relative;
+	margin-bottom: 30px;
+}
+
+input {
+	font-size: 18px;
+	padding: 10px 10px 10px 5px;
+	-webkit-appearance: none;
+	display: block;
+	background: #fafafa;
+	color: #636363;
+	width: 100%;
+	border: none;
+	border-radius: 0;
+	border-bottom: 1px solid #757575;
+}
+
+input:focus { outline: none; }
+
+
+/* Label */
+
+label {
+	color: #999;
+	font-size: 18px;
+	font-weight: normal;
+	position: absolute;
+	pointer-events: none;
+	left: 5px;
+	top: 10px;
+	transition: all 0.2s ease;
+}
+
+
+/* active */
+
+input:focus ~ label,input:valid  ~ label {
+	top: -20px;
+  transform: scale(.75); left: -2px;
+	/* font-size: 14px; */
+	color: #4a89dc;
+}
+
+
+/* Underline */
+
+.bar {
+	position: relative;
+	display: block;
+	width: 100%;
+}
+
+.bar:before, .bar:after {
+	content: '';
+	height: 2px;
+	width: 0;
+	bottom: 1px;
+	position: absolute;
+	background: #4a89dc;
+	transition: all 0.2s ease;
+}
+
+.bar:before { left: 50%; }
+
+.bar:after { right: 50%; }
+
+
+/* active */
+
+input:focus ~ .bar:before, input:focus ~ .bar:after { width: 50%; }
+
+/* Button */
+
+.button {
+  position: relative;
+  display: inline-block;
+  padding: 12px 24px;
+  margin: .3em 0 1em 0;
+  width: 100%;
+  vertical-align: middle;
+  color: #fff;
+  font-size: 16px;
+  line-height: 20px;
+  -webkit-font-smoothing: antialiased;
+  text-align: center;
+  letter-spacing: 1px;
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid #3160B6;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.button:focus { outline: 0; }
+
+
+/* Button modifiers */
+
+.buttonBlue {
+  background: #4a89dc;
+  text-shadow: 1px 1px 0 rgba(39, 110, 204, .5);
+}
+
+.buttonBlue:hover { background: #357bd8; }
+
+
+/* Ripples container */
+
+.ripples {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+}
+
+
+/* Ripples circle */
+
+.ripplesCircle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.ripples.is-active .ripplesCircle {
+  animation: ripples .4s ease-in;
+}
+
+
+/* Ripples animation */
+
+@keyframes ripples {
+  0% { opacity: 0; }
+
+  25% { opacity: 1; }
+
+  100% {
+    width: 200%;
+    padding-bottom: 200%;
+    opacity: 0;
+  }
+}
+</style>
+
+<script>
+$(document).ready(function() {
+
+function showUser(){
+$('#welcomeuser').empty();
+$("#welcomeuser").append(
+'<div class="dropdown" style = "display: inline-block;"><button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Favorite List <span class="caret"></span></button><ul class="dropdown-menu"><div id="dropdown-menu"></div></ul></div><p style="color:white;margin: 0px; padding: 0px;display: inline-block;" >&nbsp&nbsp&nbspWelcome, ' + localStorage.getItem("EGamerUser") + '&nbsp&nbsp&nbsp<a href="/Home" class="btn btn-danger"  style="size:50%" id="logout-button">Log out <span style="color:white" class="glyphicon glyphicon-log-out"></span></a>');
+}
+
+if(localStorage.getItem("EGamerUser") != null)
+showUser();
+
+$("#logout-button").click(function(){
+	localStorage.removeItem("EGamerUser");
+	localStorage.removeItem("EGamerUserID");
+});
+
+$("#registerbutton").click(function(){
+		var tempName, tempEmail, tempPassword;
+		tempName = document.forms["register"]["Name"].value;
+		tempEmail = document.forms["register"]["Email"].value;
+		tempPassword = document.forms["register"]["Password"].value;
+		if(tempEmail == ""|| tempName == "" || tempPassword == "")
+		{
+			$('#filltext1').show();
+		}
+		else
+		{
+		$('#filltext1').hide();
+			$.ajax({
+				url: "http://127.0.0.1:4242/Home",
+				type: 'POST',
+				data: $('#registerID').serialize(),
+				success: function(result){
+					//alert("my result="+data);
+					alert(result);
+
+					var d=result.split(",");
+
+					alert(d[0]);
+					alert(d[1]);
+					if(result == "email fail"){
+						$('#registertext').show();
+					}
+					if(result!= "email fail"){
+					$('#registertext').hide();
+						$('#after-register-content').show();
+						$('#register-content').hide();
+						setTimeout(function(){$('#login-link').trigger('click');},3000);
+					    //alert("Thanks for registering an account, your email is: " + result.Email + " and username is: " + result + ". Enjoy!");
+					}
+					}
+					, error: function (xhr, textStatus, errorThrown) {
+						alert("error");
+						console.log(textStatus);
+      		}
+				});
+			}
+	});
+
+
+$("#loginbutton").click(function(){
+		var tempEmail, tempPassword;
+		tempEmail = document.forms["signin"]["Email"].value;
+		tempPassword = document.forms["signin"]["Password"].value;
+		if(tempEmail == ""|| tempPassword == "")
+		{
+			$('#filltext2').show();
+		}
+		else
+		{
+			$.ajax({
+				url: "http://127.0.0.1:4242/Login",
+				type: 'POST',
+				data: $('#signinID').serialize(),
+				success: function(result){
+					//alert("my result="+data);
+					//alert(result);
+
+					//var d=result.split(",");
+
+					//alert(d[0]);
+					//alert(d[1]);
+
+					if(result == "email fail"){
+						$('#logintext').show();
+					}
+					if(result!= "email fail"){
+					result = JSON.parse(result);
+					//$('#afeterloginwelcome').value = "Welcome, back" + result[0].Name;
+					//document.getElementById("afeterloginwelcome").innerHTML = "Welcome, back";
+					var tempName = JSON.stringify(result[0].Name);
+					var slicetempName = tempName.slice(1,-1);
+					var tempid = JSON.stringify(result[0].id);
+					//var slicetempid = tempid.slice(1,-1);
+					
+					$('#after-login-content').empty();
+					$('#after-login-content').append("<p style='text-align:center;font-size: 2em;'> Welcome, " + slicetempName + ". </p>");
+						$('#after-login-content').show();
+						$('#logintext').hide();
+						$('#login-content').hide();
+						localStorage.setItem("EGamerUser", slicetempName);
+						localStorage.setItem("EGamerUserID", tempid);
+						
+						setTimeout(function(){location.reload();},3000);
+					}
+					}
+					, error: function (xhr, textStatus, errorThrown) {
+						alert("error");
+						console.log(textStatus);
+      		}
+				});
+			}
+	});
+		
+	 function readfavourite(){
+        
+        $.ajax({
+          url: "http://127.0.0.1:4242/readfavourlist",          
+          type: "POST",
+          data: {Userid:localStorage.getItem("EGamerUserID"),Username:localStorage.getItem("EGamerUser")},
+          success: function (result) {
+            result = JSON.parse(result);
+            $("#dropdown-menu").empty();
+            $.each(result, function(i,fav){
+              $("#dropdown-menu").append('<li style="text-align:center;color:grey;">'+fav.FavoriteListTitle+'<span id="'+fav.FavoriteListTitle+'" class="glyphicon glyphicon-trash" style="text-align:right"></span></li>');  
+            })
+            console.log(result);
+            //alert(result);
+          },
+          error: function(result){
+              console.log(result);
+            }
+        });
+        
+		  };
+		  
+		  
+	readfavourite();
+	
+	$("#dropdown-menu").on("click", "span", function() {
+       var tempUserid = localStorage.getItem("EGamerUserID");
+		var tempUsername = localStorage.getItem("EGamerUser");
+		var tempFavouriteListTitle = this.id;
+        $.ajax({
+           url: "http://127.0.0.1:4242/delfavourlist",                     
+		   type: "POST",
+          data: {Userid:tempUserid,Username:tempUsername,FavoriteListTitle:tempFavouriteListTitle},
+           success: function (result) {
+		   alert("success");
+           },
+           error: function(result){
+             }
+         });
+       
+       
+    $(this).parent().remove();
+});
+	
+	});
+</script>
+
+
+</head>
+
+<body>
+<!---------------------------------------------------->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">E-Gamer</a>
+        </div>
+        <div>
+        <ul class="nav navbar-nav">
+          <li><a href="/Home">Home</a></li>
+          <li class="active"><a href="/Resources">Resources</a></li>
+		  <li><a href="/map">Contact us</a></li>
+        </ul>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <form class="navbar-form navbar-right">
+		  <div id="welcomeuser">
+            <button type="button" class = "btn btn-link" data-toggle="modal" data-target="#RegisterForm" onclick="$('#register-content').show();$('#after-register-content').hide();">Register <span class="glyphicon glyphicon-user"></button>
+            <a href="" class="btn btn-success" data-toggle="modal" data-target="#SigninForm">Sign in <span style="color:black" class="glyphicon glyphicon-log-in"></span></a>
+          </div>
+		  </form>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+    </div>
+<!---------------------------------------------------->
+<div class="container">
+<div class="header">
+<h1>User Login</h1>
+</div>
+<div class="well">
+	<pre>
+	url: "http://127.0.0.1:4242/Login.html",
+	type: 'POST',
+	data: user(Table)
+		$('#signinID').serialize()(Cell data)
+	
+	result{
+	"id": "0",
+	"Name": "sunny",
+	"Email": "abc@gmail.com",
+	"Password": "123"
+	}
+	error{
+		if(err) {
+			throw err;
+			console.log(err);
+		}
+		dbo.collection("user").count({"Email" : newemail}, function(err, count){
+			console.log("email not match");
+			db.close();
+			return res.end("email fail");
+		}
+		dbo.collection("user").count({"Password" : newpassword}, function(err, count){
+			console.log("password not match");
+			db.close();
+			return res.end("email fail");
+		}
+	}
+	</pre>
+</div>
+</div>
+
+<div class="container">
+<div class="header">
+<h1>User Register</h1>
+</div>
+<div class="well">
+	<pre>
+	url: "http://127.0.0.1:4242/Home.html",
+	type: 'POST',
+	data: user(Table)
+		$('#registerID').serialize()(Cell data)
+	
+	result{
+	"id": "0",
+	"Name": "sunny",
+	"Email": "abc@gmail.com",
+	"Password": "123"
+	}
+	error{
+		if(err) {
+			throw err;
+			console.log(err);
+		}
+		dbo.collection("user").count({"Email" : newemail}, function(err, count){
+			console.log("email already exist");
+			db.close();
+			return res.end("email fail");
+		}
+	}
+	</pre>
+</div>
+</div>
+
+<div class="container">
+<div class="header">
+<h1>Read favourite list</h1>
+</div>
+<div class="well">
+	<pre>
+	url: "http://127.0.0.1:4242/readfavourlist",          
+    type: "POST",
+    data: Favorite(Table)
+		{Userid:localStorage.getItem("EGamerUserID"),Username:localStorage.getItem("EGamerUser")} (Cell data)
+	
+	result{
+		{
+			"Userid": "0",
+			"Username": "sunny",
+			"FavoriteListTitle": "DMC5"
+		}
+		{
+			"Userid": "0",
+			"Username": "sunny",
+			"FavoriteListTitle": "Anthem"
+		}
+	}
+	error{
+		if (err) throw err;
+			console.log("result" + result);
+			db.close();
+	}
+	</pre>
+</div>
+</div>
+
+<div class="container">
+<div class="header">
+<h1>Add favourite list</h1>
+</div>
+<div class="well">
+	<pre>
+	url: "http://127.0.0.1:4242/addfavourlist",          
+    type: "POST",
+    data: Favorite(Table)
+		{Userid:tempUserid,Username:tempUsername,FavoriteListTitle:tempFavouriteListTitle} (Cell data)
+	
+	result{
+		{
+			"Userid": "0",
+			"Username": "sunny",
+			"FavoriteListTitle": "DMC5"
+		}
+	}
+	error{
+		if(err) throw err;
+			db.close();
+			return res.end("fail");
+	}
+	</pre>
+</div>
+</div>
+
+<div class="container">
+<div class="header">
+<h1>Delete favourite list</h1>
+</div>
+<div class="well">
+	<pre>
+	url: "http://127.0.0.1:4242/delfavourlist",          
+    type: "POST",
+    data: Favorite(Table)
+		{Userid:tempUserid,Username:tempUsername,FavoriteListTitle:tempFavouriteListTitle} (Cell data)
+	
+	result{
+		{
+			"Userid": "0",
+			"Username": "sunny",
+			"FavoriteListTitle": "DMC5"
+		}
+	}
+	error{
+		if (err) throw err;
+    		db.close();
+            return res.end("delete");
+	}
+	</pre>
+</div>
+</div>
+
+<div class="container">
+<div class="header">
+<h1>Google map API</h1>
+</div>
+<div class="well">
+	<p><<br>iframe></p>
+<p>src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1793.4659497075947!2d114.17735395831934!3d22.27658817155927!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x71ab4ae223c184e2!2z6IG35qWt6KiT57e05bGA5aSn5qiT!5e0!3m2!1szh-TW!2shk!4v1556981793336!5m2!1szh-TW!2shk"</p>
+	<p>	width="600"</p>
+	<p>	height="450" </p>
+	<p>	frameborder="0" </p>
+	<p>	style="border:0" </p>
+	<p>	allowfullscreen></p>
+<p><<br>/iframe></p>
+</div>
+</div>
+<!-------------------------- Modal --------------------------------->
+<div class="modal fade" id="RegisterForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <!--Content-->
+    <div class="modal-content form-elegant">
+    <div class="modal-header text-center">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h3 class="modal-title w-100 dark-grey-text font-weight-bold my-3" id="myModalLabel"><strong>Register</strong></h3>
+
+      </div>
+	  
+<div class="modal-body">
+	<div id="register-content">
+		<form id="registerID" name="register">
+		  <div class="group">
+			<input type="text" name="Name" required> <span class="bar"></span>
+			<label>Name</label>
+		  </div>
+		  <div class="group">
+			<input type="text" name="Email" required><span class="bar"></span>
+			<label>Email</label>
+		  </div>
+		  <div class="group">
+			<input type="password" name="Password" required><span class="bar"></span>
+			<label>Password</label>
+		  </div>
+		  <button type="button" id="registerbutton" class="button buttonBlue" >Create Account
+			<div class="ripples buttonRipples"><span class="ripplesCircle"></span></div>
+		  </button>
+		</form>
+	</div>
+
+	<p id="reigistertext" style="text-align:center;color:red;display:none">
+	Email is already be taken
+	</p>
+
+	<p id="filltext1" style="text-align:center;color:red;display:none">
+	Please fill in all the banks !!!
+	</p>
+
+	<div id="after-register-content" style="display :none;">
+	<p>Thank You for your register. Your account confirm e-mail will be sent to your registered e-mail. Please confirm in order to sign in.</p>
+	<p>This page will be redirected to login page in 3 seconds, or you can click <a href="#SigninForm" data-toggle="modal" data-dismiss="modal" id="login-link">here</a> to open.</p>
+	</div>
+
+</div>
+<div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+</div>
+</div>
+</div>
+
+
+<!--------------------------------- Modal ----------------------------->
+<div class="modal fade" id="SigninForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <!--Content-->
+    <div class="modal-content form-elegant">
+    <div class="modal-header text-center">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h3 class="modal-title w-100 dark-grey-text font-weight-bold my-3" id="myModalLabel"><strong>Sign in</strong></h3>
+
+      </div>
+  <div class="modal-body">
+	<div id="login-content">
+		<form id="signinID" name="signin">
+		  <div class="group">
+			<input type="text" name="Email" required> <span class="bar"></span>
+			<label>Email</label>
+		  </div>
+		  <div class="group">
+			<input type="password" name="Password" required><span class="bar"></span>
+			<label>Password</label>
+		  </div>
+		  <button type="button" id="loginbutton" class="button buttonBlue">Login
+			<div class="ripples buttonRipples"><span class="ripplesCircle"></span></div>
+		  </button>
+		</form>
+		</div>
+
+
+		<p id="logintext" style="text-align:center;color:red;display:none">
+		Email or password is wrong, please try again !
+		</p>
+
+		<p id="filltext2" style="text-align:center;color:red;display:none">
+		Please fill in all the banks !!!
+		</p>
+
+		<div id="after-login-content" style="display :none;">
+		<p id="afeterloginwelcome">Welcome.</p>
+		</div>
+</div>
+
+<div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</body>
+</html>

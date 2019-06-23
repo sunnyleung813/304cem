@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>E-Gamer</title>
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<style>
+body{
+  padding-top: 50px;
+  padding-bottom: 20px;
+}
+#cover_1{
+	height:400px;
+	margin-top: 10px;
+	}
+#cover_2{
+	height:400px;
+	margin-top: 10px;
+	}
+#cover_3{
+	height:400px;
+	margin-top: 10px;
+	}
+.slide1{
+  background-image: url('devil-may-cry-5.jpg');
+  height: 500px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+.slide2{
+  background-image: url('anthem.jpg');
+  height: 500px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+.slide3{
+  background-image: url('sekira.jpg');
+  height: 500px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+.carousel-caption h1{
+  font-size: 5.4em;
+  font-family: 'Pacifico', cursive;
+  padding-bottom: .4em;
+}
+.carousel-caption p{
+  font-size: 2em;
+}
+.modal-open{
+  padding:0 !important;
+  overflow-y: auto;
+ }
+.modal-header{
+    border-bottom: none; }
+.modal-footer {
+    border-top: none; }
+
+
+.modal-dialog {
+    width: 500px;
+    margin: 50px auto;
+  }
+  .modal-content {
+    -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+  }
+  .navbar-right {
+    margin-right: 0px;
+}
+hgroup {
+	text-align:center;
+	margin-top: 1em;
+}
+
+form {
+	width: 380px;
+	margin: 1px auto;
+	padding: 3em 2em 2em 2em;
+}
+
+.group {
+	position: relative;
+	margin-bottom: 30px;
+}
+
+input {
+	font-size: 18px;
+	padding: 10px 10px 10px 5px;
+	-webkit-appearance: none;
+	display: block;
+	background: #fafafa;
+	color: #636363;
+	width: 100%;
+	border: none;
+	border-radius: 0;
+	border-bottom: 1px solid #757575;
+}
+
+input:focus { outline: none; }
+
+
+/* Label */
+
+label {
+	color: #999;
+	font-size: 18px;
+	font-weight: normal;
+	position: absolute;
+	pointer-events: none;
+	left: 5px;
+	top: 10px;
+	transition: all 0.2s ease;
+}
+
+
+/* active */
+
+input:focus ~ label,input:valid  ~ label {
+	top: -20px;
+  transform: scale(.75); left: -2px;
+	/* font-size: 14px; */
+	color: #4a89dc;
+}
+
+
+/* Underline */
+
+.bar {
+	position: relative;
+	display: block;
+	width: 100%;
+}
+
+.bar:before, .bar:after {
+	content: '';
+	height: 2px;
+	width: 0;
+	bottom: 1px;
+	position: absolute;
+	background: #4a89dc;
+	transition: all 0.2s ease;
+}
+
+.bar:before { left: 50%; }
+
+.bar:after { right: 50%; }
+
+
+/* active */
+
+input:focus ~ .bar:before, input:focus ~ .bar:after { width: 50%; }
+
+/* Button */
+
+.button {
+  position: relative;
+  display: inline-block;
+  padding: 12px 24px;
+  margin: .3em 0 1em 0;
+  width: 100%;
+  vertical-align: middle;
+  color: #fff;
+  font-size: 16px;
+  line-height: 20px;
+  -webkit-font-smoothing: antialiased;
+  text-align: center;
+  letter-spacing: 1px;
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid #3160B6;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.button:focus { outline: 0; }
+
+
+/* Button modifiers */
+
+.buttonBlue {
+  background: #4a89dc;
+  text-shadow: 1px 1px 0 rgba(39, 110, 204, .5);
+}
+
+.buttonBlue:hover { background: #357bd8; }
+
+
+/* Ripples container */
+
+.ripples {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+}
+
+
+/* Ripples circle */
+
+.ripplesCircle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.ripples.is-active .ripplesCircle {
+  animation: ripples .4s ease-in;
+}
+
+
+/* Ripples animation */
+
+@keyframes ripples {
+  0% { opacity: 0; }
+
+  25% { opacity: 1; }
+
+  100% {
+    width: 200%;
+    padding-bottom: 200%;
+    opacity: 0;
+  }
+}
+</style>
+
+<script>
+$(document).ready(function() {
+
+function showUser(){
+$('#welcomeuser').empty();
+$("#welcomeuser").append(
+'<div class="dropdown" style = "display: inline-block;"><button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Favorite List <span class="caret"></span></button><ul class="dropdown-menu"><div id="dropdown-menu"></div></ul></div><p style="color:white;margin: 0px; padding: 0px;display: inline-block;" >&nbsp&nbsp&nbspWelcome, ' + localStorage.getItem("EGamerUser") + '&nbsp&nbsp&nbsp<a href="/Home" class="btn btn-danger"  style="size:50%" id="logout-button">Log out <span style="color:white" class="glyphicon glyphicon-log-out"></span></a>');
+}
+
+if(localStorage.getItem("EGamerUser") != null)
+showUser();
+
+$("#logout-button").click(function(){
+	localStorage.removeItem("EGamerUser");
+	localStorage.removeItem("EGamerUserID");
+});
+
+$("#registerbutton").click(function(){
+		var tempName, tempEmail, tempPassword;
+		tempName = document.forms["register"]["Name"].value;
+		tempEmail = document.forms["register"]["Email"].value;
+		tempPassword = document.forms["register"]["Password"].value;
+		if(tempEmail == ""|| tempName == "" || tempPassword == "")
+		{
+			$('#filltext1').show();
+		}
+		else
+		{
+		$('#filltext1').hide();
+			$.ajax({
+				url: "http://127.0.0.1:4242/Home",
+				type: 'POST',
+				data: $('#registerID').serialize(),
+				success: function(result){
+					//alert("my result="+data);
+					alert(result);
+
+					var d=result.split(",");
+
+					alert(d[0]);
+					alert(d[1]);
+					if(result == "email fail"){
+						$('#registertext').show();
+					}
+					if(result!= "email fail"){
+					$('#registertext').hide();
+						$('#after-register-content').show();
+						$('#register-content').hide();
+						setTimeout(function(){$('#login-link').trigger('click');},3000);
+					    //alert("Thanks for registering an account, your email is: " + result.Email + " and username is: " + result + ". Enjoy!");
+					}
+					}
+					, error: function (xhr, textStatus, errorThrown) {
+						alert("error");
+						console.log(textStatus);
+      		}
+				});
+			}
+	});
+
+
+$("#loginbutton").click(function(){
+		var tempEmail, tempPassword;
+		tempEmail = document.forms["signin"]["Email"].value;
+		tempPassword = document.forms["signin"]["Password"].value;
+		if(tempEmail == ""|| tempPassword == "")
+		{
+			$('#filltext2').show();
+		}
+		else
+		{
+			$.ajax({
+				url: "http://127.0.0.1:4242/Login",
+				type: 'POST',
+				data: $('#signinID').serialize(),
+				success: function(result){
+
+					if(result == "email fail"){
+						$('#logintext').show();
+					}
+					if(result!= "email fail"){
+					result = JSON.parse(result);
+					var tempName = JSON.stringify(result[0].Name);
+					var slicetempName = tempName.slice(1,-1);
+					var tempid = JSON.stringify(result[0].id);
+					
+					$('#after-login-content').empty();
+					$('#after-login-content').append("<p style='text-align:center;font-size: 2em;'> Welcome, " + slicetempName + ". </p>");
+						$('#after-login-content').show();
+						$('#logintext').hide();
+						$('#login-content').hide();
+						localStorage.setItem("EGamerUser", slicetempName);
+						localStorage.setItem("EGamerUserID", tempid);
+						
+						setTimeout(function(){location.reload();},3000);
+					}
+					}
+					, error: function (xhr, textStatus, errorThrown) {
+						alert("error");
+						console.log(textStatus);
+      		}
+				});
+			}
+	});
+	
+	
+	$("#fav-btn-1").click(function(){
+	var tempUserid = localStorage.getItem("EGamerUserID");
+	var tempUsername = localStorage.getItem("EGamerUser");
+	var tempFavouriteListTitle = "DMC5";
+        $.ajax({
+          url: "http://127.0.0.1:4242/addfavourlist",          
+          type: "POST",
+          data: {Userid:tempUserid,Username:tempUsername,FavoriteListTitle:tempFavouriteListTitle},
+          success: function (result) {
+            alert(result);
+            console.log(result);
+          },
+          error: function(result){
+              console.log(result);
+            }
+        });
+		
+		});
+		$("#fav-btn-2").click(function(){
+		var tempUserid = localStorage.getItem("EGamerUserID");
+		var tempUsername = localStorage.getItem("EGamerUser");
+		var tempFavouriteListTitle = "Anthem";
+			$.ajax({
+			  url: "http://127.0.0.1:4242/addfavourlist",          
+			  type: "POST",
+			  data: {Userid:tempUserid,Username:tempUsername,FavoriteListTitle:tempFavouriteListTitle},
+			  success: function (result) {
+				alert(result);
+				console.log(result);
+			  },
+			  error: function(result){
+				  console.log(result);
+				}
+			});
+			
+			});
+		$("#fav-btn-3").click(function(){
+		var tempUserid = localStorage.getItem("EGamerUserID");
+		var tempUsername = localStorage.getItem("EGamerUser");
+		var tempFavouriteListTitle = "Sekiro-STD";
+			$.ajax({
+			  url: "http://127.0.0.1:4242/addfavourlist",          
+			  type: "POST",
+			  data: {Userid:tempUserid,Username:tempUsername,FavoriteListTitle:tempFavouriteListTitle},
+			  success: function (result) {
+				alert(result);
+				console.log(result);
+			  },
+			  error: function(result){
+				  console.log(result);
+				}
+			});
+			
+			});
+		
+		
+	 function readfavourite(){
+        
+        $.ajax({
+          url: "http://127.0.0.1:4242/readfavourlist",          
+          type: "POST",
+          data: {Userid:localStorage.getItem("EGamerUserID"),Username:localStorage.getItem("EGamerUser")},
+          success: function (result) {
+            result = JSON.parse(result);
+            $("#dropdown-menu").empty();
+            $.each(result, function(i,fav){
+              $("#dropdown-menu").append('<li style="text-align:center;color:grey;">'+fav.FavoriteListTitle+'<span id="'+fav.FavoriteListTitle+'" class="glyphicon glyphicon-trash" style="text-align:right"></span></li>');  
+            })
+            console.log(result);
+          },
+          error: function(result){
+              console.log(result);
+            }
+        });
+        
+		  };
+		  
+		  
+	readfavourite();
+	
+	$("#dropdown-menu").on("click", "span", function() {
+       var tempUserid = localStorage.getItem("EGamerUserID");
+		var tempUsername = localStorage.getItem("EGamerUser");
+		var tempFavouriteListTitle = this.id;
+        $.ajax({
+           url: "http://127.0.0.1:4242/delfavourlist",                     
+		   type: "POST",
+          data: {Userid:tempUserid,Username:tempUsername,FavoriteListTitle:tempFavouriteListTitle},
+           success: function (result) {
+		   
+           },
+           error: function(result){
+             }
+         });
+       
+       
+    $(this).parent().remove();
+});
+	
+	});
+</script>
+
+
+</head>
+
+<body>
+<!---------------------------------------------------->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">E-Gamer</a>
+        </div>
+        <div>
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="/Home">Home</a></li>
+          <li><a href="/Resources">Resources</a></li>
+		  <li><a href="/map">Contact us</a></li>
+        </ul>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <form class="navbar-form navbar-right">
+		  <div id="welcomeuser">
+            <button type="button" class = "btn btn-link" data-toggle="modal" data-target="#RegisterForm" onclick="$('#register-content').show();$('#after-register-content').hide();">Register <span class="glyphicon glyphicon-user"></button>
+            <a href="" class="btn btn-success" data-toggle="modal" data-target="#SigninForm">Sign in <span style="color:black" class="glyphicon glyphicon-log-in"></span></a>
+          </div>
+		  </form>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+    </div>
+<!---------------------------------------------------->
+<div id="theCarousel" class="carousel slide" data-ride="carousel">
+  <!-- Define how many slides to put in the carousel -->
+  <ol class="carousel-indicators">
+    <li data-target="#theCarousel" data-slide-to="0" class="active"> </li >
+    <li data-target="#theCarousel" data-slide-to="1"> </li>
+    <li data-target ="#theCarousel" data-slide-to="2"> </li>
+  </ol >
+
+  <!-- Define the text to place over the image -->
+  <div class="carousel-inner">
+    <div class="item active" >
+    <div class ="slide1"></div>
+    <div class="carousel-caption">
+      <h1>Devil May Cry 5</h1>
+      <p>Your worst nightmare</p>
+    </div>
+  </div>
+  <div class="item">
+  <div class="slide2"></div>
+  <div class="carousel-caption">
+    <h1>Anthem</h1>
+    <p>The Worst Loading screen you can Imagine</p>
+  </div>
+  </div>
+  <div class="item">
+  <div class="slide3"></div>
+  <div class="carousel-caption">
+  <h1>Sekiro:Shadows Die Twice</h1>
+  <p>Your worst nightmare comes back.</p>
+  </div>
+  </div>
+  </div>
+
+  <!-- Set the actions to take when the arrows are clicked -->
+  <a class="left carousel-control" href="#theCarousel" data-slide="prev">
+  <span class="glyphicon glyphicon-chevron-left"> </span>
+  </a>
+  <a class="right carousel-control" href="#theCarousel" data-slide="next">
+  <span class="glyphicon glyphicon-chevron-right"></span>
+  </a>
+  </div>
+
+<!-- Thumbnails -->
+<div class="container">
+<div class="row">
+  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+    <div class="thumbnail">
+      <img src="devil-may-cry-5-cover.jpg" id="cover_1" alt="...">
+      <div class="caption">
+        <h3>Devil May Cry 5</h3>
+        <p>The Devil you know returns in this brand new entry in the over-the-top action series available on the PC. Prepare to get downright demonic with this signature blend of high-octane stylized action and otherworldly...</p>
+        <p><a href="" class="btn btn-primary" role="button" id="fav-btn-1">Add to Favourite List <span class="glyphicon glyphicon-star-empty"></span></a></p>
+      </div>
+      </div>
+  </div>
+  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+    <div class="thumbnail">
+      <img src="anthem_cover.jpg" id="cover_2" alt="...">
+      <div class="caption">
+        <h3>Anthem</h3>
+        <p>Anthem is an online multiplayer action role-playing video game developed by BioWare and published by Electronic Arts. The game was released worldwide for Microsoft Windows, PlayStation 4 and Xbox One on February 22, 2019...</p>
+       <p><a href="" class="btn btn-primary" role="button" id="fav-btn-2">Add to Favourite List <span class="glyphicon glyphicon-star-empty"></span></a></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+    <div class="thumbnail">
+      <img src="Sekiro_cover.jpg" id="cover_3" alt="...">
+      <div class="caption">
+        <h3>Sekiro: Shadows Die Twice</h3>
+        <p>Sekiro: Shadows Die Twice is an action-adventure video game developed by FromSoftware and published by Activision. The game was released worldwide for Microsoft Windows, PlayStation 4, and Xbox One on March 22, 2019...</p>
+        <p><a href="" class="btn btn-primary" role="button" id="fav-btn-3">Add to Favourite List <span class="glyphicon glyphicon-star-empty"></span></a></p>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+
+<!-------------------------- Modal --------------------------------->
+<div class="modal fade" id="RegisterForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <!--Content-->
+    <div class="modal-content form-elegant">
+    <div class="modal-header text-center">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h3 class="modal-title w-100 dark-grey-text font-weight-bold my-3" id="myModalLabel"><strong>Register</strong></h3>
+
+      </div>
+	  
+<div class="modal-body">
+	<div id="register-content">
+		<form id="registerID" name="register">
+		  <div class="group">
+			<input type="text" name="Name" required> <span class="bar"></span>
+			<label>Name</label>
+		  </div>
+		  <div class="group">
+			<input type="text" name="Email" required><span class="bar"></span>
+			<label>Email</label>
+		  </div>
+		  <div class="group">
+			<input type="password" name="Password" required><span class="bar"></span>
+			<label>Password</label>
+		  </div>
+		  <button type="button" id="registerbutton" class="button buttonBlue" >Create Account
+			<div class="ripples buttonRipples"><span class="ripplesCircle"></span></div>
+		  </button>
+		</form>
+	</div>
+
+	<p id="reigistertext" style="text-align:center;color:red;display:none">
+	Email is already be taken
+	</p>
+
+	<p id="filltext1" style="text-align:center;color:red;display:none">
+	Please fill in all the banks !!!
+	</p>
+
+	<div id="after-register-content" style="display :none;">
+	<p>Thank You for your register.</p>
+	<p>This page will be redirected to login page in 3 seconds, or you can click <a href="#SigninForm" data-toggle="modal" data-dismiss="modal" id="login-link">here</a> to open.</p>
+	</div>
+
+</div>
+<div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+</div>
+</div>
+</div>
+
+
+<!--------------------------------- Modal ----------------------------->
+<div class="modal fade" id="SigninForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <!--Content-->
+    <div class="modal-content form-elegant">
+    <div class="modal-header text-center">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h3 class="modal-title w-100 dark-grey-text font-weight-bold my-3" id="myModalLabel"><strong>Sign in</strong></h3>
+
+      </div>
+  <div class="modal-body">
+	<div id="login-content">
+		<form id="signinID" name="signin">
+		  <div class="group">
+			<input type="text" name="Email" required> <span class="bar"></span>
+			<label>Email</label>
+		  </div>
+		  <div class="group">
+			<input type="password" name="Password" required><span class="bar"></span>
+			<label>Password</label>
+		  </div>
+		  <button type="button" id="loginbutton" class="button buttonBlue">Login
+			<div class="ripples buttonRipples"><span class="ripplesCircle"></span></div>
+		  </button>
+		</form>
+		</div>
+
+
+		<p id="logintext" style="text-align:center;color:red;display:none">
+		Email or password is wrong, please try again !
+		</p>
+
+		<p id="filltext2" style="text-align:center;color:red;display:none">
+		Please fill in all the banks !!!
+		</p>
+
+		<div id="after-login-content" style="display :none;">
+		<p id="afeterloginwelcome">Welcome.</p>
+		</div>
+</div>
+
+<div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</body>
+</html>
